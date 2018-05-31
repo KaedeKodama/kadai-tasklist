@@ -11,6 +11,8 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::resource('tasklists', 'TasklistsController');
+// copy function (button)
+
+Route::get('/', 'TasklistsController@index');
+
