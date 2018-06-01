@@ -56,7 +56,11 @@ $task = new Tasklist;
      */
     public function store(Request $request)
     {
-$task = new Tasklist;
+	$this->validate($request, [
+            'content' => 'required|max:10',
+        ]);
+
+	$task = new Tasklist;
         $task->content = $request->content;
         $task->save();
 
@@ -108,7 +112,10 @@ $task = Tasklist::find($id);
      */
     public function update(Request $request, $id)
     {
-        $task = Tasklist::find($id);
+	$this->validate($request, [
+            'content' => 'required|max:191',
+        ]);       
+	$task = Tasklist::find($id);
         $task->content = $request->content;
         $task->save();
 
