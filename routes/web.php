@@ -11,7 +11,7 @@
 |
 */
 
-Route::resource('tasklists', 'TasklistsController');
+Route::resource('tasks', 'TasklistsController');
 // copy function (button)
 
 Route::get('/', 'TasklistsController@index');
