@@ -57,11 +57,13 @@ $task = new Tasklist;
     public function store(Request $request)
     {
 	$this->validate($request, [
-            'content' => 'required|max:10',
+            'content' => 'required|max:191',
+            'status'=>'required|max:10'
         ]);
 
 	$task = new Tasklist;
         $task->content = $request->content;
+        $task->status = $request ->status;
         $task->save();
 
         return redirect('/');        
@@ -114,9 +116,11 @@ $task = Tasklist::find($id);
     {
 	$this->validate($request, [
             'content' => 'required|max:191',
+            'status'=>'required|max:10'
         ]);       
 	$task = Tasklist::find($id);
         $task->content = $request->content;
+        $task->status = $request ->status;
         $task->save();
 
         return redirect('/');

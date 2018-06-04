@@ -2,10 +2,10 @@
 
 @section('content')
 
-    <h1>id = {{ $task->id }} のメッセージ詳細ページ</h1>
+    <h1>id = {{ $task->id }} のタスク詳細ページ</h1>
 
-   <p>タイトル: {{ $tasklist->title }}</p>
-   <p>メッセージ: {{ $tasklist->content }}</p>
+   <p>タイトル: {{ $task->status }}</p>
+   <p>メッセージ: {{ $task->content }}</p>
 
 
     {!! link_to_route('tasks.edit', 'このメッセージを編集', ['id' => $task->id]) !!}
