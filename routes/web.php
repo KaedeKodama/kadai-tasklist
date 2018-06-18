@@ -11,13 +11,13 @@
 |
 */
 
-Route::resource('tasks', 'TasklistsController');
-// copy function (button)
 
-//Route::get('/', 'TasklistsController@index');
 
-Route::get('/', function () {
-    return view('welcome');
+ Route::get('/', 'TasklistsController@index');
+ 
+Route::group(['middleware' => 'auth'], function () {
+    
+    Route::resource('tasks', 'TasklistsController');
 });
 
 Route::get('signup', 'Auth\RegisterController@showRegistrationForm')->name('signup.get');

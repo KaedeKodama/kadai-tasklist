@@ -21,12 +21,19 @@ class TasklistsController extends Controller
      */
     public function index()
     {
-        $tasks = Tasklist::all();
+        
+        
+        if (\Auth::check()) {
+        $user = \Auth::user();
+        $tasks = $user->tasks()->orderBy('created_at', 'desc')->paginate(10);
 
         return view('tasks.index', [ // resource/view/tasks/index.blade.php
             'tasks' => $tasks,
         ]);        
-
+       
+        }else{
+            return view('welcome');
+        } 
 
 
     }
@@ -38,15 +45,20 @@ class TasklistsController extends Controller
      */
     public function create()
     {
-$task = new Tasklist;
+            $task = new Tasklist;
+            
+            return view('tasks.create',[
+                'task' => $task,
+            ]);
+    
+            }
+    
+            
 
-        return view('tasks.create', [
-            'task' => $task,
-        ]);        
+            
 
 
-
-    }
+    
 
     /**
      * Store a newly created resource in storage.
@@ -60,13 +72,21 @@ $task = new Tasklist;
             'content' => 'required|max:191',
             'status'=>'required|max:10'
         ]);
+    
 
-	$task = new Tasklist;
+
+	    $task = new Tasklist;
         $task->content = $request->content;
         $task->status = $request ->status;
+       
+        $user=\Auth::user();
+        $task-> user_id = $user-> id;
+       
+       
+       
         $task->save();
 
-        return redirect('/');        
+        return redirect('/tasks');        
 
 
 
@@ -80,14 +100,23 @@ $task = new Tasklist;
      */
     public function show($id)
     {
-$task = Tasklist::find($id);
+        $task = Tasklist::find($id);
+        if (\Auth::id() === $task->user_id) {
+            
+            return view('tasks.show',[
+                'task' => $task,
+            ]);
 
-        return view('tasks.show', [
-            'task' => $task,
-        ]);        
-
-
-
+    
+    }
+    else {
+        return redirect('/tasks');
+        
+        
+        
+    }
+        
+        
     }
 
     /**
@@ -98,11 +127,26 @@ $task = Tasklist::find($id);
      */
     public function edit($id)
     {
+       
         $task = Tasklist::find($id);
+        
+        if (\Auth::id() === $task->user_id) {
+           
+            return view('tasks.edit',['task' => $task,
+            ]);
+        }  
+        
+        
+        else {
+        return redirect('/tasks');
+        
+        
+        
+    }
+        
 
-        return view('tasks.edit', [
-            'task' => $task,
-        ]);
+        
+        
     }
 
     /**
@@ -123,7 +167,7 @@ $task = Tasklist::find($id);
         $task->status = $request ->status;
         $task->save();
 
-        return redirect('/');
+        return redirect('/tasks');
     }
 
     /**
@@ -134,9 +178,11 @@ $task = Tasklist::find($id);
      */
     public function destroy($id)
     {
+        
+        
         $task = Tasklist::find($id);
         $task->delete();
 
-        return redirect('/');
+        return redirect('/tasks');
     }
 }

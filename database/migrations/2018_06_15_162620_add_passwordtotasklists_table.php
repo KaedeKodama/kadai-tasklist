@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTasklistsTable extends Migration
+class AddPasswordtotasklistsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,8 @@ class CreateTasklistsTable extends Migration
      */
     public function up()
     {
-        Schema::create('tasklists', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('content');
-            $table->timestamps();
-
+        Schema::table('users', function (Blueprint $table) {//modified tasklist=>users 2018.06.18
+            $table->string('password', 60)-> change();
         });
     }
 
@@ -28,6 +25,8 @@ class CreateTasklistsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tasklists');
+        Schema::table('users', function (Blueprint $table) {//modified tasklist=>users 2018.06.18
+         $table->string('password')-> change();
+        });
     }
 }
