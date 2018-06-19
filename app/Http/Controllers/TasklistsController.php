@@ -165,11 +165,13 @@ class TasklistsController extends Controller
 	$task = Tasklist::find($id);
         $task->content = $request->content;
         $task->status = $request ->status;
-        $task->save();
+        if (\Auth::id() === $task->user_id) {
+       
+        $task->save(); }
 
         return redirect('/tasks');
+         
     }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -181,8 +183,10 @@ class TasklistsController extends Controller
         
         
         $task = Tasklist::find($id);
+        
+         if (\Auth::id() === $task->user_id) {
         $task->delete();
-
+        }
         return redirect('/tasks');
     }
 }
